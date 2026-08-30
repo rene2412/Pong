@@ -2,6 +2,7 @@
 #include "field.h"
 #include "ball.h"
 #include "player.h"
+#include "enemy.h"
 const int SCREEN_WIDTH = 1480;
 const int SCREEN_HEIGHT = 720;
 
@@ -12,15 +13,17 @@ int main()
     Field field;
     Ball ball;
     Player player;
+    Enemy enemy; 
     while (!WindowShouldClose())
     {
         // Update
         // Draw
         BeginDrawing();
-        ClearBackground(DARKGREEN);
-        //DrawText("Soccer Pong", 20, 20, 40, WHITE);
+        ClearBackground(BLACK);
+       // DrawText("Soccer Pong", 20, 20, 40, BLACK);
 	field.Draw();
-        ball.Update(player);
+        enemy.Draw();
+	ball.Update(player);
 	player.Update();
 	EndDrawing();
     }

@@ -6,7 +6,7 @@ class Field {
 		Texture2D field;	
 	public:
 		Field() {
-			img = LoadImage("images/soccer_pong_field.png");
+			img = LoadImage("images/Board.png");
 			ImageResize(&img, 1150, 700);
 			field = LoadTextureFromImage(img);	
 			UnloadImage(img);

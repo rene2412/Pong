@@ -8,12 +8,12 @@ class Ball {
 		Texture2D ball_sprite;
 		Rectangle ball_hitbox;
 		Vector2 Position;
-		float speed = 3.0f;
-		int width = 70, height = 70, scalar = 2;
-		bool init = true, player_hit = false, bot_hit = false;
+		float speed = 4.0f;
+		int width = 35, height = 35, scalar = 2;
+		bool move_left = true, move_right = false;
 	public:
 		Ball() {
-			img = LoadImage("images/ball_sprite.png");
+			img = LoadImage("images/Ball.png");
 			ImageResize(&img, width, height);
 			ball_sprite = LoadTextureFromImage(img); 
 			UnloadImage(img);
@@ -37,32 +37,32 @@ class Ball {
 
 		void Movement(const Player &player) {
 			std::cout << Position.x << std::endl;
-			//init
-			if (init) {
-				Position.x -= speed;
-			}
-			if (player_hit and !bot_hit) {
-				Position.x -= speed * scalar;
-			}
-			if (bot_hit and !player_hit) {
-				Position.x += speed;
-			}
 			ball_hitbox.x = Position.x;
 			ball_hitbox.y = Position.y;
-
-			if (Position.x <= 400) {
-				init = false;
-				std::cout << "WALL: \n";
+			std::cout << "Move Right: " << move_right << std::endl;
+			std::cout << "Move Left`: " << move_left << std::endl;
+			//init
+			if (move_left) {
+				Position.x -= speed;
+			}
+			if (move_right) {
 				Position.x += speed;
 			}
-
-			if (CheckCollisionRecs(GetBallHitBox(), player.GetPlayerHitBox())) { 
-					std::cout << "RETURN TO PLAYER\n"; 
-					init = false;
-					player_hit = false;
-					bot_hit = true;
-					//position.y *= -2;	
+			if (Position.x <= 200) {
+				move_right = true;
+				move_left = false;
+				std::cout << "WALL BOUNCE BACK:\n";
 			}
+			if (Position.x >= 1000) {
+				move_left = true;
+				move_right = false;
+			} 
+			if (CheckCollisionRecs(GetBallHitBox(), player.GetPlayerHitBox())) { 
+				std::cout << "RETURN TO PLAYER\n"; 
+				move_right = true;
+				move_left = false;
+			}
+
 		}
 
 		void Draw() {
