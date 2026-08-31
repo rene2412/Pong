@@ -8,16 +8,22 @@ class Player {
   	Rectangle player_hitbox;
 	Vector2 Position;
 	float slider_speed;
-	int width = 25, height = 170;
+	int width = 25, height = 175;
+	
    public:
 	Player() {
-		Position.x = 300;
+		Position.x = 25;
 		Position.y = 225;
 		slider_speed = 5.0f;
 		player_hitbox = { Position.x, Position.y, width, height };
 	}
+	
 	Rectangle GetPlayerHitBox() const {
 		return player_hitbox;
+	}
+	
+	Vector2 GetPlayerPosition() const {
+		return Position;
 	}
 
 	void Update() {
@@ -40,12 +46,31 @@ class Player {
 			Position.y -= slider_speed;
 		}
 		if (IsKeyDown(KEY_DOWN)) {
-			if (Position.y >= 385) {
-				Position.y = 385;
+			if (Position.y >= 720) {
+				Position.y = 720;
 			}
 			Position.y += slider_speed;
 		}
 	//	std::cout << Position.y << std::endl;	
-	}
+     }
+
+      int Calculate_Angle(Vector2 &hit) {
+      		if (hit.y >= 140) {
+			return -75;
+		}
+		else if (hit.y >= 105) {
+			return -60;
+		}   
+		else if (hit.y >= 70) {
+			return 0;
+		}
+		else if (hit.y >= 35) {
+			return 60;
+		}
+		else if (hit.y >= 0) {
+			return 75;
+		}
+		else return 90;
+      }
 
 };
