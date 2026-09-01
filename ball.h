@@ -10,7 +10,7 @@ class Ball {
 		Rectangle ball_hitbox;
 		Vector2 Position;
 		Vector2 Velocity;
-		float speed = 5.0f;
+		float speed = 10.0f;
 		float angle = 0.0f;
 		int width = 25, height = 25, scalar = 2;
 		bool move_left = true, move_right = false;
@@ -46,7 +46,7 @@ class Ball {
 		}
 
 		void Movement(Player &player) {
-			std::cout << Position.x << std::endl;
+			std::cout << Position.x << ", " << Position.y << std::endl;
 			ball_hitbox.x = Position.x;
 			ball_hitbox.y = Position.y;
 			//init
@@ -63,20 +63,18 @@ class Ball {
 			}
 		        if (Position.y <= 0) {
 				std::cout << "Richocet top\n";
-				Velocity.x = cos(-angle) * speed;
-				Velocity.y = sin(-angle) * speed;
+				Velocity.y = -Velocity.y;
 				move_right = false;
 			}
 			if (Position.y >= 720) {
 				std::cout << "Richocet Bottom\n";
-				Velocity.x = cos(angle) * speed;
-				Velocity.y = sin(angle) * speed;
+				Velocity.y = -Velocity.y;
 
 			}	
 			if (CheckCollisionRecs(GetBallHitBox(), player.GetPlayerHitBox()) and !move_right) { 
 				//std::cout << "RETURN TO PLAYER\n"; 
 				int player_paddle_hit_position = player.Calculate_Angle(Position);
-				std::cout << "Position Paddle Hit: " << player_paddle_hit_position << std::endl;
+				std::cout << "Position Paddle Ball Hit: " << Position.y << std::endl;
 				angle = player_paddle_hit_position * DEG2RAD;
 				std::cout << "Angle taken: " << angle << std::endl;
 				Velocity.x = cos(angle) * speed;

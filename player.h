@@ -32,6 +32,7 @@ class Player {
 	}
 
 	void Draw() {
+		std::cout << "POS Y: " << Position.y << std::endl;
 		DrawRectangle(Position.x, Position.y, width, height, BLUE); 
 	}
 	
@@ -40,14 +41,14 @@ class Player {
 		player_hitbox.y = Position.y;
 		
 		if (IsKeyDown(KEY_UP)) {
-			if (Position.y <= 160) {
-				Position.y = 160;
+			if (Position.y <= 20) {
+				Position.y = 20;
 			}
 			Position.y -= slider_speed;
 		}
 		if (IsKeyDown(KEY_DOWN)) {
-			if (Position.y >= 720) {
-				Position.y = 720;
+			if (Position.y >= 525) {
+				Position.y = 525;
 			}
 			Position.y += slider_speed;
 		}
@@ -55,20 +56,28 @@ class Player {
      }
 
       int Calculate_Angle(Vector2 &hit) {
-      		if (hit.y >= 140) {
-			return -75;
+	      /*
+      		int relativePos = 
+		if ( >= ) {
+			std::cout << "Returning -45 at: " << hit.y << std::endl;
+			return -45;
 		}
-		else if (hit.y >= 105) {
-			return -60;
+	      */
+		if (hit.y >= 105) {
+			std::cout << "Returning -15 at: " << hit.y << std::endl;
+			return -15;
 		}   
 		else if (hit.y >= 70) {
+			std::cout << "Returning 0 at: " << hit.y << std::endl;
 			return 0;
 		}
-		else if (hit.y >= 35) {
-			return 60;
+		else if (hit.y >= 15) {
+			std::cout << "Returning 15 at: " << hit.y << std::endl;
+			return 15;
 		}
 		else if (hit.y >= 0) {
-			return 75;
+			std::cout << "Returning 45 at: " << hit.y << std::endl;
+			return 45;
 		}
 		else return 90;
       }
