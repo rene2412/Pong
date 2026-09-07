@@ -1,90 +1,38 @@
 #pragma once
 #include "raylib.h"
-#include "player.h"
 #include <cmath>
+#include <thread>
+#include <mutex>
+
+class Player;
+class Enemy;
 
 class Ball {
-	private:
-		Image img;
-		Texture2D ball_sprite;
-		Rectangle ball_hitbox;
-		Vector2 Position;
-		Vector2 Velocity;
-		float speed = 10.0f;
-		float angle = 0.0f;
-		int width = 25, height = 25, scalar = 2;
-		bool move_left = true, move_right = false;
-		
-	public:
-		Ball() {
-			img = LoadImage("images/Ball.png");
-			ImageResize(&img, width, height);
-			ball_sprite = LoadTextureFromImage(img); 
-			UnloadImage(img);
-			Position.x = 600;
-			Position.y = 500;
-			Velocity.x = -speed;
-			Velocity.y = angle;
-			ball_hitbox = { Position.x, Position.y, width, height };
-		}	
-		
-		~Ball() {
-			UnloadTexture(ball_sprite);
-		}
-		
-		Rectangle GetBallHitBox() const {
-			return ball_hitbox;
-		}
+private:
+    Image img, img2, img3, img4, img5, img6, img7;
+    Texture2D ball_sprite, ball_effect_right, ball_effect_top_corner_right, ball_effect_bottom_corner_right,
+	      ball_effect_left, ball_effect_top_corner_left, ball_effect_bottom_left;
+    Rectangle ball_hitbox;
+    Vector2 Position;
+    Vector2 Velocity;
+    float speed = 17.0f;
+    float angle = 0.0f;
+    int width = 30, height = 30, scalar = 2;
+    bool move_left = true, move_right = false;
+    std::mutex position_mtx;
+public:
+    Ball();
+    ~Ball();
 
-		Vector2 GetBallPosition() const {
-			return Position;
-		}
+    Rectangle GetBallHitBox() const;
+    Vector2 GetBallPosition() const;
+    Vector2 GetBallVelocity() const;
+    float GetBallAngle() const;
 
-		void Update(Player &player) {
-			Movement(player);
-			Draw();
-		}
-
-		void Movement(Player &player) {
-			std::cout << Position.x << ", " << Position.y << std::endl;
-			ball_hitbox.x = Position.x;
-			ball_hitbox.y = Position.y;
-			//init
-			Position.x += Velocity.x;
-			Position.y += Velocity.y;
-			
-			if (Position.x <= 0) {
-				std::cout << "WALL BOUNCE BACK:\n";
-			 	Velocity.x = -Velocity.x;	
-			}
-			if (Position.x >= 1280) {
-				Velocity.x = -Velocity.x;
-				move_right = false;
-			}
-		        if (Position.y <= 0) {
-				std::cout << "Richocet top\n";
-				Velocity.y = -Velocity.y;
-				move_right = false;
-			}
-			if (Position.y >= 720) {
-				std::cout << "Richocet Bottom\n";
-				Velocity.y = -Velocity.y;
-
-			}	
-			if (CheckCollisionRecs(GetBallHitBox(), player.GetPlayerHitBox()) and !move_right) { 
-				//std::cout << "RETURN TO PLAYER\n"; 
-				int player_paddle_hit_position = player.Calculate_Angle(Position);
-				std::cout << "Position Paddle Ball Hit: " << Position.y << std::endl;
-				angle = player_paddle_hit_position * DEG2RAD;
-				std::cout << "Angle taken: " << angle << std::endl;
-				Velocity.x = cos(angle) * speed;
-				Velocity.y = sin(angle) * speed;
-				move_right = true;
-			}
-
-		}
-
-		void Draw() {
-			DrawTexture(ball_sprite, Position.x, Position.y, WHITE);
-		}
+    void Update(Player &player, Enemy &enemy);
+    void Movement(Player &player, Enemy &enemy);
+    void Effect();
+    void Draw();
+    
 };
+

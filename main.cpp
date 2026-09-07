@@ -3,12 +3,14 @@
 #include "ball.h"
 #include "player.h"
 #include "enemy.h"
+#include "ui.h"
+
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
 
 int main()
 {
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Soccer Pong");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Classic Pong");
     SetTargetFPS(60);
     Field field;
     Ball ball;
@@ -22,13 +24,13 @@ int main()
         ClearBackground(WHITE);
        // DrawText("Soccer Pong", 20, 20, 40, BLACK);
 	field.Draw();
-        enemy.Draw();
-	ball.Update(player);
+        enemy.Update(ball);
+	ball.Update(player, enemy);
 	player.Update();
+	UI::DrawScoreboard(player, enemy);
 	EndDrawing();
     }
-
-    CloseWindow();
+    	CloseWindow();
 
     return 0;
 }

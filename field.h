@@ -7,7 +7,7 @@ class Field {
 	public:
 		Field() {
 			img = LoadImage("images/Board.png");
-			ImageResize(&img, 1300, 700);
+			ImageResize(&img, 1300, 720);
 			field = LoadTextureFromImage(img);	
 			UnloadImage(img);
 		}
